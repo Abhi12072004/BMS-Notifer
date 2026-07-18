@@ -1,9 +1,6 @@
-BookMyShow Ticket-Release Notifier — Cloud (GitHub Actions) version
----------------------------------------------------------------------
-Runs ONCE per invocation (GitHub Actions calls this on a schedule).
-Checks the date-specific BMS page for Palazzo showtimes, and if found,
-sends an urgent push via ntfy.sh. No laptop/phone needs to stay on.
-"""
+# BookMyShow Ticket-Release Notifier - Cloud (GitHub Actions) version
+# Runs ONCE per invocation. Checks the date-specific BMS page for Palazzo
+# showtimes, and if found, sends an urgent push via ntfy.sh.
  
 import os
 import re
@@ -14,7 +11,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
  
 MOVIE_URL_BASE = "https://in.bookmyshow.com/movies/chennai/the-odyssey/buytickets/ET00480917"
-TARGET_DATE = os.environ.get("TARGET_DATE", "20260723")  # Thursday 23 Jul
+TARGET_DATE = os.environ.get("TARGET_DATE", "20260723")
 CHECK_URL = f"{MOVIE_URL_BASE}/{TARGET_DATE}"
  
 CINEMA_KEYWORD = "Palazzo"
@@ -33,7 +30,7 @@ def build_driver():
     return webdriver.Chrome(options=options)
  
  
-def check_page(driver) -> bool:
+def check_page(driver):
     driver.get(CHECK_URL)
     time.sleep(5)
     text = driver.find_element("tag name", "body").text
@@ -74,9 +71,9 @@ def main():
         driver.quit()
  
     if found:
-        print(f"FOUND — Palazzo showtimes are live for {TARGET_DATE}. Sending push.")
+        print(f"FOUND - Palazzo showtimes are live for {TARGET_DATE}. Sending push.")
         send_ntfy(
-            "BookMyShow — Booking Open!",
+            "BookMyShow - Booking Open!",
             f"Palazzo IMAX showtimes are live for {TARGET_DATE}. Tap to book.",
         )
     else:
