@@ -11,7 +11,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
  
 MOVIE_URL_BASE = "https://in.bookmyshow.com/movies/chennai/the-odyssey/buytickets/ET00480917"
-TARGET_DATE = os.environ.get("TARGET_DATE", "20260723")
+TARGET_DATE = os.environ.get("TARGET_DATE", "20260722")
 CHECK_URL = f"{MOVIE_URL_BASE}/{TARGET_DATE}"
  
 CINEMA_KEYWORD = "Palazzo"
