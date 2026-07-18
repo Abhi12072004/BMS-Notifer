@@ -34,7 +34,7 @@ def check_page(driver):
     driver.get(CHECK_URL)
     time.sleep(5)
     text = driver.find_element("tag name", "body").text
- 
+    print(f"PAGE LENGTH: {len(text)} | FIRST 300 CHARS: {text[:300]}")
     if CINEMA_KEYWORD.lower() not in text.lower():
         return False
  
