@@ -1,0 +1,39 @@
+name: BMS Ticket Notifier
+ 
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+ 
+permissions:
+  actions: write
+  contents: read
+ 
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+ 
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+ 
+      - name: Install Chrome
+        uses: browser-actions/setup-chrome@v1
+ 
+      - name: Install Python dependencies
+        run: pip install selenium requests
+ 
+      - name: Run ticket check
+        id: check
+        env:
+          NTFY_TOPIC: abhijeeth-bms-odyssey-9247
+          TARGET_DATE: '20260723'
+        run: python cloud_notify.py
+ 
+      - name: Stop future runs once tickets are found
+        if: steps.check.outputs.found == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow disable "BMS Ticket Notifier"
